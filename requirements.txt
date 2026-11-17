@@ -1,0 +1,4 @@
+# 7 ART TAILORS - ENTERPRISE ATELIER SUITE
+# Production Dependencies for Render / Cloud & Local deployment
+Pillow>=10.0.0
+openpyxl>=3.1.0

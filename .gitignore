@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+logs/
+tunnel_url.txt
+studio.db-shm
+studio.db-wal
+.vscode/
+.idea/
+

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>7 ART TAILORS — Enterprise Studio</title>
+
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="theme-color" content="#FAF5F5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="7 Art Studio">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+
+  <!-- Typography (Asynchronous Non-Blocking for Instant Mobile Paint) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  </noscript>
+
+  <!-- Atelier Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=20261113f">
+
+  <script>
+    (function() {
+      try {
+        var raw = localStorage.getItem('7art_user') || sessionStorage.getItem('7art_user');
+        if (raw && JSON.parse(raw)) {
+          document.documentElement.classList.add('has-active-session');
+        }
+      } catch(e) {}
+    })();
+  </script>
+
+  <style>
+    /* Instant smooth visibility toggle when session is active on reload */
+    html.has-active-session #loginScreenWrap {
+      display: none !important;
+    }
+    html.has-active-session .hide-for-login {
+      display: flex !important;
+    }
+    @media (max-width: 768px) {
+      html.has-active-session aside.app-sidebar.hide-for-login {
+        display: none !important;
+      }
+      html.has-active-session .mobile-bottom-nav.hide-for-login {
+        display: flex !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container login-mode">
+    
+    <!-- Sidebar Navigation (Desktop / Tablet Drawer) -->
+    <aside class="app-sidebar hide-for-login">
+      
+      <!-- Brand Header -->
+      <div class="sidebar-header">
+        <div class="brand-emblem">✂️</div>
+        <div class="brand-info">
+          <div class="brand-title app-brand-title">7 Art Tailors</div>
+          <div class="brand-subtitle">STUDIO LEDGER</div>
+        </div>
+      </div>
+
+      <!-- Nav Items -->
+      <nav class="sidebar-nav">
+        <a href="#my-work" class="nav-item" data-page="my-work" id="navItemMyWork" style="display: none;">
+          <span class="nav-icon">✂️</span>
+          <span class="nav-text">My Work & Pieces</span>
+          <span class="nav-badge" style="background: var(--rust); color: white;">Bench</span>
+        </a>
+        <a href="#dashboard" class="nav-item active" data-page="dashboard" id="navItemDashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="#booking" class="nav-item" data-page="booking" id="navItemBooking">
+          <span class="nav-icon">⏱️</span>
+          <span class="nav-text">Counter</span>
+          <span class="nav-badge">New</span>
+        </a>
+        <a href="#orders" class="nav-item" data-page="orders" id="navItemOrders">
+          <span class="nav-icon">📑</span>
+          <span class="nav-text">Orders</span>
+        </a>
+        <a href="#customers" class="nav-item" data-page="customers" id="navItemCustomers">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">Customers</span>
+        </a>
+        <a href="#manage" class="nav-item" data-page="manage" id="navItemManage">
+          <span class="nav-icon">✂️</span>
+          <span class="nav-text">Manage</span>
+        </a>
+        <a href="#settings" class="nav-item" data-page="settings" id="navItemSettings">
+          <span class="nav-icon">🔒</span>
+          <span class="nav-text">Settings</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button id="collapseSidebarBtn" class="collapse-btn">
+          <span>«</span>
+          <span class="collapse-text">Collapse menu</span>
+        </button>
+
+        <div class="sidebar-sync-section">
+          <div class="sync-status-pill" id="sidebarEngineStatusPill" style="cursor: pointer;" onclick="App.openStudioStatusModal()" title="Click to view Studio Engine & Network Status">
+            <span class="sync-dot" id="sidebarEngineStatusDot"></span>
+            <span id="sidebarEngineStatusText">Local Studio Engine Active</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="App.openMobileConnectModal()" style="justify-content: flex-start;">
+            <span>📱</span> Connect Phone / Tablet
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="window.location.href=API.getExcelDownloadUrl()" style="justify-content: flex-start;">
+            <span>📊</span> Export Live Excel
+          </button>
+        </div>
+
+        <div class="owner-badge" id="sidebarUserBadge" style="cursor: pointer;" onclick="App.confirmLogout()" title="Click to Sign Out or Switch Account">
+          <div class="owner-avatar" id="sidebarUserAvatar">BS</div>
+          <div class="owner-badge-text">
+            <div class="owner-name" id="sidebarUserName">BHAGIRATH SAINI</div>
+            <div class="owner-role" id="sidebarUserRole">Master Atelier Owner</div>
+          </div>
+          <span style="font-size: 14px; opacity: 0.6; margin-left: auto;">🚪</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Viewport -->
+    <div class="app-main">
+      
+      <!-- Top Sticky Bar -->
+      <header class="top-bar hide-for-login">
+        <div class="top-bar-left">
+          <button id="mobileMenuToggle" class="mobile-menu-btn" aria-label="Toggle Menu">
+            ☰
+          </button>
+          <div>
+            <div id="topBarBadge" class="page-title-badge">OVERVIEW</div>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span id="topBarTitle" class="page-title">Dashboard</span>
+              <span id="topBarSubtitle" class="page-subtitle">— Atelier Summary & Alerts</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="top-bar-right">
+          <!-- Active User Pill Tag -->
+          <div id="topBarUserPill" style="display: flex; align-items: center; gap: 6px;"></div>
+
+          <button class="btn btn-secondary btn-sm btn-text-hide" onclick="App.openMobileConnectModal()">
+            <span>📱</span> Connect Device
+          </button>
+          <button id="topBarNewOrderBtn" class="btn btn-primary btn-sm" onclick="window.App.navigate('booking')">
+            <span>✂️</span> + New Order
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic View Container -->
+      <main id="viewport" class="content-viewport">
+        <div class="login-screen-wrap" id="loginScreenWrap">
+          <div class="login-card">
+            
+            <div class="login-logo">
+              <div class="login-emblem">✂️</div>
+              <div class="login-title">7 Art Tailors</div>
+              <div class="login-subtitle">STUDIO LEDGER · BESPOKE ATELIER</div>
+            </div>
+
+            <div id="loginAlertBox" style="display: none; background: var(--red-light); color: var(--red); border: 1px solid rgba(179,64,46,0.25); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; font-weight: 500;">
+            </div>
+
+            <form id="studioLoginForm" onsubmit="event.preventDefault(); if(window.LoginView) window.LoginView.handleFormSubmit(event); return false;" autocomplete="off" style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="loginUsername">Staff ID / Username</label>
+                <input type="text" id="loginUsername" name="usr_studio_clean" class="form-input" placeholder="Enter your ID (e.g. bhagirath)" required autocomplete="off" autocapitalize="none" spellcheck="false" value="" style="font-size: 16px;">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <label class="form-label" for="loginPassword">Password</label>
+                  <button type="button" id="togglePasswordBtn" style="background: none; border: none; font-size: 12px; color: var(--rust); cursor: pointer; font-weight: 600; padding: 2px 4px;">
+                    Show
+                  </button>
+                </div>
+                <input type="password" id="loginPassword" name="pwd_studio_clean" class="form-input" placeholder="Enter your password" required autocomplete="new-password" value="" style="font-size: 16px;">
+              </div>
+
+              <button type="submit" id="loginSubmitBtn" onclick="event.preventDefault(); if(window.LoginView) window.LoginView.handleFormSubmit(event); return false;" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px; font-size: 15px; font-weight: 700; margin-top: 4px;">
+                <span>🔑</span> Sign In
+              </button>
+            </form>
+
+            <div style="text-align: center; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border-light); padding-top: 14px; line-height: 1.5;">
+              <span>Please enter the ID and Password assigned to you by the studio owner (Bhagirath Saini).</span>
+            </div>
+
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar (1-Thumb Mobile App Experience) -->
+  <nav class="mobile-bottom-nav hide-for-login" id="mobileBottomNav">
+    <a href="#my-work" class="mobile-nav-link" data-page="my-work" id="mobileNavMyWork" style="display: none;">
+      <span class="icon">✂️</span>
+      <span>My Bench</span>
+    </a>
+    <a href="#dashboard" class="mobile-nav-link active" data-page="dashboard" id="mobileNavDashboard">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="#booking" class="mobile-nav-link" data-page="booking" id="mobileNavBooking">
+      <span class="icon">⏱️</span>
+      <span>Counter</span>
+    </a>
+    <a href="#orders" class="mobile-nav-link" data-page="orders" id="mobileNavOrders">
+      <span class="icon">📑</span>
+      <span>Orders</span>
+    </a>
+    <a href="#customers" class="mobile-nav-link" data-page="customers" id="mobileNavCustomers">
+      <span class="icon">👥</span>
+      <span>Clients</span>
+    </a>
+    <a href="#manage" class="mobile-nav-link" data-page="manage" id="mobileNavManage">
+      <span class="icon">✂️</span>
+      <span>Team</span>
+    </a>
+    <a href="#settings" class="mobile-nav-link" data-page="settings" id="mobileNavSettings">
+      <span class="icon">⚙️</span>
+      <span>Settings</span>
+    </a>
+    <a href="javascript:void(0)" class="mobile-nav-link" id="mobileNavLogout" onclick="window.App.confirmLogout()" style="display: none;">
+      <span class="icon">🚪</span>
+      <span>Sign Out</span>
+    </a>
+  </nav>
+
+  <!-- Universal Custom Modal -->
+  <div id="customModalOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h3 id="customModalTitle" class="modal-title">Modal Title</h3>
+        </div>
+        <button class="modal-close" onclick="window.App.closeCustomModal()">✕</button>
+      </div>
+      <div id="customModalBody" class="modal-body">
+        <!-- Injected Body -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.App.closeCustomModal()">Cancel</button>
+        <button type="button" id="customModalConfirmBtn" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print Station & Slip Preview Modal -->
+  <div id="printModalOverlay" class="modal-overlay">
+    <div class="modal-card modal-card-xl">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Job Slip, Invoice & Workshop Print Station</h3>
+          <p class="modal-subtitle">High-fidelity customer receipts, cloth tags, and tailoring cards</p>
+        </div>
+        <button class="modal-close" onclick="window.App.closePrintModal()">✕</button>
+      </div>
+      <div id="printModalBody" class="modal-body" style="background: var(--paper);">
+        <!-- Injected Live Preview -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="window.App.closePrintModal()">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Print to Paper / Thermal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- High-Speed Consolidated Studio Bundle (Replaces 11 HTTP roundtrips with 1 gzipped request) -->
+  <script src="js/studio.bundle.js?v=20261114b"></script>
+
+</body>
+</html>
+
